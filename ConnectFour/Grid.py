@@ -13,9 +13,11 @@ class Grid:
         self.connectN = connectN
         self.grid = [[Cell.EMPTY for _ in range(cols)] for _ in range(rows)]
 
+    # Returns the grid
     def GetGrid(self):
         return self.grid
 
+    # Returns the row the piece is inserted to
     def insertCol(self, col, cell):
         if col < 0 or col > self.cols:
             raise ValueError("Col is out of bounds")
@@ -26,6 +28,7 @@ class Grid:
                 self.grid[row][col] = cell
                 return row
     
+    # Returns True if there is a win, False otherwise
     def CheckWin(self, row, col, cell):
         curCount = 0
         # Check Horizontal
@@ -49,7 +52,28 @@ class Grid:
             
         # Check Diagonal
         curCount = 0
-        df
+        r,c = 0,0
+        while r < self.rows and c < self.cols:
+            if self.grid[r][c] == cell:
+                curCount += 1
+            else:
+                curCount = 0
+            if curCount == self.connectN:
+                return True
+            r += 1
+            c += 1
 
         # Check Other Diagonal
-    
+        curCount = 0
+        r,c = 0, self.cols-1
+        while r < self.rows and c > 0:
+            if self.grid[r][c] == cell:
+                curCount += 1
+            else:
+                curCount = 0
+            if curCount == self.connectN:
+                return True
+            r += 1
+            c -= 1
+        
+        return False
